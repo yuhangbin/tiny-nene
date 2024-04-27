@@ -1,4 +1,5 @@
 package com.cboy.common.pojo;
 
-public class NeneReq extends NeneMsg{
+public class NeneReq<T> extends NeneMsg {
+
 }
