@@ -1,4 +1,4 @@
-package com.cboy.connection.server;
+package com.cboy.connection.server.handler;
 
 import com.cboy.common.exception.NeneException;
 import com.cboy.common.pojo.NeneMsg;

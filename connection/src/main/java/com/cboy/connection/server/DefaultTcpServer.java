@@ -4,7 +4,11 @@ import com.cboy.common.exception.NeneException;
 import com.cboy.common.pojo.NeneMsg;
 import com.cboy.connection.codec.NeneDecoder;
 import com.cboy.connection.codec.NeneEncoder;
+import com.cboy.connection.server.handler.LoginHandler;
+import com.cboy.connection.server.handler.ServerHandler;
+import com.cboy.connection.session.SessionManager;
 import io.netty.bootstrap.ServerBootstrap;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.EventLoopGroup;
@@ -35,6 +39,14 @@ public class DefaultTcpServer implements TcpServer<NeneMsg>, DisposableBean {
     @Autowired
     NeneEncoder neneEncoder;
 
+    @Autowired
+    ServerHandler serverHandler;
+    @Autowired
+    LoginHandler loginHandler;
+
+    @Autowired
+    SessionManager sessionManager;
+
     @PostConstruct
     public void init() {
         start();
@@ -43,7 +55,6 @@ public class DefaultTcpServer implements TcpServer<NeneMsg>, DisposableBean {
     @Override
     public void start() {
         try {
-            final ServerHandler serverHandler = new ServerHandler();
             ServerBootstrap serverBootstrap = new ServerBootstrap();
             serverBootstrap.group(bossGroup, workerGroup)
                     .channel(NioServerSocketChannel.class)
@@ -52,6 +63,7 @@ public class DefaultTcpServer implements TcpServer<NeneMsg>, DisposableBean {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
                             ch.pipeline().addLast(neneDecoder);
+                            ch.pipeline().addLast(loginHandler);
                             ch.pipeline().addLast(serverHandler);
                             ch.pipeline().addLast(neneEncoder);
                         }
@@ -66,7 +78,6 @@ public class DefaultTcpServer implements TcpServer<NeneMsg>, DisposableBean {
 
     @Override
     public void push(NeneMsg neneResp) {
-
     }
 
     @Override
