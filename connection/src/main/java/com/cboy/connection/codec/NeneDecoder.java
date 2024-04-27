@@ -5,10 +5,12 @@ import com.cboy.common.utils.JsonUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
+import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
+@Component
 public class NeneDecoder extends ByteToMessageDecoder {
 
     @Override
