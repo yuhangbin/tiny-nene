@@ -4,7 +4,6 @@ import com.cboy.common.exception.NeneException;
 import com.cboy.common.pojo.NeneMsg;
 import com.cboy.connection.codec.NeneDecoder;
 import com.cboy.connection.codec.NeneEncoder;
-import com.cboy.connection.handler.ServerHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;

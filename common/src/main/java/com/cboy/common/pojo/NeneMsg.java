@@ -15,6 +15,4 @@ public class NeneMsg implements NeneProtocol{
     private int msgType;
 
 
-
-
 }

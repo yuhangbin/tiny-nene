@@ -1,24 +1,21 @@
 package com.cboy.common.exception;
 
+import com.cboy.common.enums.ErrorCodeEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
-@AllArgsConstructor
+@NoArgsConstructor
 public class NeneException extends RuntimeException{
 
-    private int ec;
-    private String em;
-
-    public NeneException() {
-        super();
-    }
-
-    public NeneException(String message) {
-        super(message);
-    }
+    private ErrorCodeEnum errorCodeEnum;
 
     public NeneException(String message, Throwable cause) {
         super(message, cause);
+    }
+
+    public NeneException(ErrorCodeEnum errorCodeEnum) {
+        this.errorCodeEnum = errorCodeEnum;
     }
 }

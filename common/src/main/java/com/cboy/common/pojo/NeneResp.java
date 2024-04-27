@@ -26,7 +26,7 @@ public class NeneResp<T> extends NeneMsg{
     }
 
     public static <T> NeneResp<T> error(NeneMsg neneMsg, NeneException e) {
-        return error(neneMsg.getMsgId(), neneMsg.getMsgType(), e.getEc(), e.getEm(), null);
+        return error(neneMsg.getMsgId(), neneMsg.getMsgType(), e.getErrorCodeEnum().getEc(), e.getErrorCodeEnum().getEm(), null);
     }
 
     public static <T> NeneResp<T> error(NeneMsg neneMsg, ErrorCodeEnum e) {
