@@ -7,8 +7,6 @@ public interface TcpServer<Msg> {
      */
     void start();
 
-    void push(Msg resp);
-
     /**
      * Shutdown this server.
      */

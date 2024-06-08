@@ -26,7 +26,7 @@ import java.net.InetSocketAddress;
 
 @Slf4j
 @Component
-public class DefaultTcpServer implements TcpServer<NeneMsg>, DisposableBean {
+public class DefaultTcpServer implements TcpServer<NeneMsg<?>>, DisposableBean {
 
     private final EventLoopGroup bossGroup = new NioEventLoopGroup(1);
 
@@ -35,21 +35,20 @@ public class DefaultTcpServer implements TcpServer<NeneMsg>, DisposableBean {
     public static final int PORT = 20000;
 
     @Autowired
-    NeneDecoder neneDecoder;
-    @Autowired
-    NeneEncoder neneEncoder;
-
-    @Autowired
-    ServerHandler serverHandler;
-    @Autowired
     LoginHandler loginHandler;
 
     @Autowired
     SessionManager sessionManager;
 
+    ChannelFuture channelFuture;
+
     @PostConstruct
     public void init() {
-        start();
+        new Thread(() -> {
+            log.info("[DefaultTcpServer:init] server port:{}", PORT);
+            start();
+            log.info("[DefaultTcpServer:init] server started port:{}", PORT);
+        }).start();
     }
 
     @Override
@@ -62,14 +61,13 @@ public class DefaultTcpServer implements TcpServer<NeneMsg>, DisposableBean {
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
-                            ch.pipeline().addLast(neneDecoder);
-                            ch.pipeline().addLast(loginHandler);
-                            ch.pipeline().addLast(serverHandler);
-                            ch.pipeline().addLast(neneEncoder);
+                            ch.pipeline().addLast(new NeneDecoder());
+//                            ch.pipeline().addLast(loginHandler);
+                            ch.pipeline().addLast(new ServerHandler());
+                            ch.pipeline().addLast(new NeneEncoder());
                         }
                     });
-            ChannelFuture channelFuture = serverBootstrap.bind().sync();
-            channelFuture.channel().closeFuture().sync();
+            channelFuture = serverBootstrap.bind().sync();
         } catch (Throwable e) {
             throw new NeneException("server init failed.", e);
         }
@@ -77,14 +75,11 @@ public class DefaultTcpServer implements TcpServer<NeneMsg>, DisposableBean {
     }
 
     @Override
-    public void push(NeneMsg neneResp) {
-    }
-
-    @Override
     public void shutdown() {
         try {
-            bossGroup.shutdownGracefully().sync();
-            workerGroup.shutdownGracefully().sync();
+            channelFuture.channel().closeFuture().sync();
+            bossGroup.shutdownGracefully().syncUninterruptibly();
+            workerGroup.shutdownGracefully().syncUninterruptibly();
         } catch (Throwable e) {
             log.warn("[DefaultTcpServer:shutdown] e:{}", ExceptionUtils.getStackTrace(e));
         }
