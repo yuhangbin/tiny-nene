@@ -3,13 +3,13 @@ package com.cboy.connection.codec;
 import com.cboy.common.pojo.NeneMsg;
 import com.cboy.common.utils.JsonUtils;
 import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
-import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
 
-@Component
+@ChannelHandler.Sharable
 public class NeneEncoder extends MessageToByteEncoder<NeneMsg> {
 
     @Override
