@@ -1,7 +1,6 @@
 package com.cboy.connection.session;
 
 import com.cboy.common.pojo.NeneMsg;
-import com.cboy.common.pojo.NeneReq;
 import io.netty.channel.Channel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -27,7 +26,7 @@ public class SessionManager {
         return Optional.ofNullable(userChannelMap.getOrDefault(userId, null));
     }
 
-    public Optional<Channel> get(NeneReq<?> req) {
+    public Optional<Channel> get(NeneMsg<?> req) {
         Optional<Long> userId = getUserId(req);
         if (userId.isPresent()) {
             return get(userId.get());
@@ -35,10 +34,8 @@ public class SessionManager {
         return Optional.empty();
     }
 
-    public Optional<Long> getUserId(NeneMsg neneMsg) {
-        // TODO
-        NeneReq<?> req = NeneReq.getNeneReq(neneMsg);
-        return getUserIdByToken(req.getToken());
+    public Optional<Long> getUserId(NeneMsg<?> neneMsg) {
+        return getUserIdByToken(neneMsg.getToken());
     }
 
     public Optional<Long> getUserIdByToken(String token) {

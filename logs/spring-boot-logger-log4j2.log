@@ -1,4 +1,0 @@
-2024-04-20 23:25:49,444 INFO o.s.b.StartupInfoLogger [main] Starting ConnectionApplication using Java 21.0.2 with PID 76478 (/Users/yuhangbin/Code/Project/tiny-nene/connection/target/classes started by yuhangbin in /Users/yuhangbin/Code/Project/tiny-nene)
-2024-04-20 23:25:49,446 INFO o.s.b.SpringApplication [main] No active profile set, falling back to 1 default profile: "default"
-2024-04-20 23:25:49,738 INFO o.s.b.StartupInfoLogger [main] Started ConnectionApplication in 0.461 seconds (process running for 0.967)
-2024-04-20 23:25:49,742 INFO c.c.c.s.DefaultTcpServer [SpringApplicationShutdownHook] [DefaultTcpServer:destroy] shutdown

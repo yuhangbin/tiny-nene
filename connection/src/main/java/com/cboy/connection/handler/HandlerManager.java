@@ -1,10 +1,14 @@
 package com.cboy.connection.handler;
 
-import com.cboy.common.pojo.NeneReq;
-import com.cboy.common.pojo.NeneResp;
+import com.cboy.common.pojo.NeneMsg;
+import org.springframework.stereotype.Component;
 
-public interface HandlerManager {
+@Component
+public class HandlerManager {
 
-
-    <T> NeneResp<T> handle(NeneReq<T> req);
+     public <T> NeneMsg<T> handle(NeneMsg<?> req) {
+         NeneMsg<T> resp = new NeneMsg<>();
+         resp.setMsgId(req.getMsgId());
+         return resp;
+     }
 }
