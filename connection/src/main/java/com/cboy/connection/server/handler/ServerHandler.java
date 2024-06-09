@@ -1,5 +1,6 @@
 package com.cboy.connection.server.handler;
 
+import com.cboy.common.enums.MsgTypeEnum;
 import com.cboy.common.exception.NeneException;
 import com.cboy.common.pojo.NeneMsg;
 import com.cboy.common.utils.JsonUtils;
@@ -43,6 +44,7 @@ public class ServerHandler extends SimpleChannelInboundHandler<NeneMsg<Object>> 
             // TODO make nene msg create more easily
             NeneMsg<?> resp = new NeneMsg<>();
             resp.setMsgId(req.getMsgId());
+            resp.setMsgType(MsgTypeEnum.CLOSE.getMsgType());
             resp.setEc(neneException.getErrorCodeEnum().getEc());
             resp.setEm(neneException.getErrorCodeEnum().getEm());
             log.info("[ServerHandler:exceptionCaught] neneResp:{}", resp);
